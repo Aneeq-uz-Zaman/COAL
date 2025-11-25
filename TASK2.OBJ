@@ -1,0 +1,75 @@
+Microsoft (R) Macro Assembler Version 5.00                  10/3/25 12:57:57
+                                                             Page     1-1
+
+
+       1				.model small 
+       2 0100				.stack 100h 
+       3 0000				.data 
+       4 0000  6D 79 6E 61 6D 65 69	array db "mynameisaneeq$" 
+       5       73 61 6E 65 65 71 24	
+       6 000E  4D 59 4E 41 4D 45 49	array1 db "MYNAMEISANEEQ$" 
+       7       53 41 4E 45 45 51 24	
+       8 0000				.code 
+       9 0000				main proc 
+      10 0000  B8 ---- R		mov ax,@data 
+      11 0003  8E D8			mov ds,ax 
+      12 0005  BE 0000 R		mov si,offset array 
+      13 0008  BF 000E R		mov di, offset array1 
+      14 000B  83 C6 08			add si,8 
+      15 000E  83 C7 08			add di,8 
+      16 0011  B9 0005			mov cx,5 
+      17 0014				again: and [si],DFh 
+task2.asm(15): error A2009: Symbol not defined: DFH
+      18 0014  83 0D 20			        or [di],20h 
+task2.asm(16): error A2035: Operand must have size
+      19 0017  46			        inc si 
+      20 0018  47			        inc di 
+      21 0019  49			        dec cx 
+      22 001A  75 F8			        jnz again 
+      23 001C  BA 000E R		mov dx,offset array1 
+      24 001F  CD 15			int 21 
+      25 0021  BA 0000 U		mov dx,offset array2 
+task2.asm(23): error A2009: Symbol not defined: ARRAY2
+      26 0024  CD 15			int 21 
+      27 0026  B4 4C			mov ah,4ch 
+      28 0028  CD 15			int 21 
+      29 002A				main endp 
+task2.asm(27): error A2006: Phase error between passes
+      30 002A				end main 
+Microsoft (R) Macro Assembler Version 5.00                  10/3/25 12:57:57
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	001C	WORD	PUBLIC	'DATA'
+  STACK  . . . . . . . . . . . .  	0100	PARA	STACK	'STACK'
+_TEXT  . . . . . . . . . . . . .  	002A	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AGAIN  . . . . . . . . . . . . .  	L NEAR	0014	_TEXT
+ARRAY  . . . . . . . . . . . . .  	L BYTE	0000	_DATA
+ARRAY1 . . . . . . . . . . . . .  	L BYTE	000E	_DATA
+
+MAIN . . . . . . . . . . . . . .  	N PROC	0000	_TEXT	Length = 002A
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@DATASIZE  . . . . . . . . . . .  	TEXT  0		
+@FILENAME  . . . . . . . . . . .  	TEXT  task2		
+
+
+     28 Source  Lines
+     28 Total   Lines
+     18 Symbols
+
+  50584 + 465960 Bytes symbol space free
+
+      0 Warning Errors
+      4 Severe  Errors

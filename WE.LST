@@ -1,0 +1,76 @@
+Microsoft (R) Macro Assembler Version 5.00                  10/18/25 20:02:27
+                                                             Page     1-1
+
+
+       1				.MODEL SMALL 
+       2 0100				.STACK 100H 
+       3 0000				.DATA 
+       4 0000  45 6E 74 65 72 20 61	MSG DB 'Enter a character: $' 
+       5       20 63 68 61 72 61 63	
+       6       74 65 72 3A 20 24	
+       7 0000				.CODE 
+       8 0000				MAIN PROC 
+       9 0000  B8 ---- R		    MOV AX, @DATA 
+      10 0003  8E D8			    MOV DS, AX 
+      11				 
+      12				    ; Display message 
+      13 0005  8D 16 0000 R		    LEA DX, MSG 
+      14 0009  B4 09			    MOV AH, 09H 
+      15 000B  CD 21			    INT 21H 
+      16				 
+      17				    ; Take input (single character) 
+      18 000D  B4 01			    MOV AH, 01H 
+      19 000F  CD 21			    INT 21H     ; AL = key pressed 
+      20				 
+      21				    ; Move to next line 
+      22 0011  B2 0D			    MOV DL, 0DH 
+      23 0013  B4 02			    MOV AH, 02H 
+      24 0015  CD 21			    INT 21H 
+      25 0017  B2 0A			    MOV DL, 0AH 
+      26 0019  B4 02			    MOV AH, 02H 
+      27 001B  CD 21			    INT 21H 
+      28				 
+      29				    ; Display the character again 
+      30 001D  8A D0			    MOV DL, AL 
+      31 001F  B4 02			    MOV AH, 02H 
+      32 0021  CD 21			    INT 21H 
+      33				 
+      34				    ; Exit 
+      35 0023  B4 4C			    MOV AH, 4CH 
+      36 0025  CD 21			    INT 21H 
+      37 0027				MAIN ENDP 
+      38 0027				END MAIN 
+Microsoft (R) Macro Assembler Version 5.00                  10/18/25 20:02:27
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	0014	WORD	PUBLIC	'DATA'
+  STACK  . . . . . . . . . . . .  	0100	PARA	STACK	'STACK'
+_TEXT  . . . . . . . . . . . . .  	0027	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+MAIN . . . . . . . . . . . . . .  	N PROC	0000	_TEXT	Length = 0027
+MSG  . . . . . . . . . . . . . .  	L BYTE	0000	_DATA
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@DATASIZE  . . . . . . . . . . .  	TEXT  0		
+@FILENAME  . . . . . . . . . . .  	TEXT  L4T1		
+
+
+     36 Source  Lines
+     36 Total   Lines
+     16 Symbols
+
+  50638 + 465906 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

@@ -1,0 +1,77 @@
+Microsoft (R) Macro Assembler Version 5.00                  10/19/25 14:45:02
+                                                             Page     1-1
+
+
+       1				.MODEL SMALL 
+       2 0100				.STACK 100H 
+       3 0000				.DATA 
+       4 0000				.CODE 
+       5 0000				MAIN PROC 
+       6 0000  B8 ---- R			MOV  AX,@DATA 
+       7 0003  8E D8			    MOV  DS,AX 
+       8 0005  B4 01				mov ah,01H 
+       9 0007  CD 21				INT 21H 
+      10 0009  8A D8			    mov BL,AL 
+      11 000B  B1 08			    MOV CL, 8 
+      12 000D  B5 00			    MOV CH,00 
+      13 000F				AGAIN: 
+      14 000F  D0 E3				SHL BL,1 
+      15 0011  73 0B				JNC AA 
+      16 0013  B2 31				MOV DL,31H 
+      17 0015  FE C5				INC CH	 
+      18 0017  B4 02				MOV AH,02 
+      19 0019  CD 15				INT 21 
+      20 001B  EB 07 90				JMP EXIT 
+      21 001E  B2 30			AA:	MOV DL,30H 
+      22 0020  B4 02				MOV AH,02 
+      23 0022  CD 15				INT 21 
+      24 0024				EXIT: 
+      25 0024  FE C9				DEC CL 
+      26 0026  75 E7				JNZ AGAIN 
+      27					 
+      28 0028  8A D1			    MOV DL,CL 
+      29 002A  B4 02			    MOV AH,02 
+      30 002C  CD 15			    INT 21 
+      31 002E  B4 4C			    MOV AH, 4CH 
+      32 0030  CD 21			    INT 21H 
+      33				 
+      34 0032				MAIN ENDP 
+      35 0032				END MAIN 
+Microsoft (R) Macro Assembler Version 5.00                  10/19/25 14:45:02
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	0000	WORD	PUBLIC	'DATA'
+  STACK  . . . . . . . . . . . .  	0100	PARA	STACK	'STACK'
+_TEXT  . . . . . . . . . . . . .  	0032	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AA . . . . . . . . . . . . . . .  	L NEAR	001E	_TEXT
+AGAIN  . . . . . . . . . . . . .  	L NEAR	000F	_TEXT
+
+EXIT . . . . . . . . . . . . . .  	L NEAR	0024	_TEXT
+
+MAIN . . . . . . . . . . . . . .  	N PROC	0000	_TEXT	Length = 0032
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@DATASIZE  . . . . . . . . . . .  	TEXT  0		
+@FILENAME  . . . . . . . . . . .  	TEXT  L6T1		
+
+
+     35 Source  Lines
+     35 Total   Lines
+     18 Symbols
+
+  50648 + 465896 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

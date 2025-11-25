@@ -1,0 +1,132 @@
+Microsoft (R) Macro Assembler Version 5.00                  11/14/25 12:14:24
+                                                             Page     1-1
+
+
+       1				.model small 
+       2 0100				.stack 100h 
+       3 0000				.data 
+       4				 
+       5 0000  90 12 11 33 54 05 11	arr db 90h,12h,11h,33h,54h,5h,11h,22h,1
+					2h,10h,45h,44h,99h,37h,77h,88h 
+       6       22 12 10 45 44 99 37	
+       7       77 88			
+       8 0010  53 6F 72 74 65 64 20	msg db "Sorted : $" 
+       9       3A 20 24			
+      10				 
+      11 0000				.code 
+      12 0000				main proc 
+      13 0000  B8 ---- R		    mov ax, @data 
+      14 0003  8E D8			    mov ds, ax 
+      15				 
+      16 0005  B9 0010			    mov cx, 16 
+      17 0008				outer_loop: 
+      18 0008  51			    push cx 
+      19 0009  BE 0000			    mov si, 0 
+      20 000C  B9 000F			    mov cx, 15 
+      21 000F				inner_loop: 
+      22 000F  8A 84 0000 R		    mov al, arr[si] 
+      23 0013  8A 9C 0001 R		    mov bl, arr[si+1] 
+      24 0017  3A C3			    cmp al, bl 
+      25 0019  76 08			    jbe no_swap 
+      26 001B  88 9C 0000 R		    mov arr[si], bl 
+      27 001F  88 84 0001 R		    mov arr[si+1], al 
+      28 0023				no_swap: 
+      29 0023  46			    inc si 
+      30 0024  E2 E9			    loop inner_loop 
+      31 0026  59			    pop cx 
+      32 0027  E2 DF			    loop outer_loop 
+      33				 
+      34 0029  BA 0010 R		    mov dx, offset msg 
+      35 002C  B4 09			    mov ah, 09h 
+      36 002E  CD 21			    int 21h 
+      37				 
+      38 0030  B9 0010			    mov cx, 16 
+      39 0033  BE 0000			    mov si, 0 
+      40 0036				print_loop: 
+      41 0036  8A 84 0000 R		    mov al, arr[si] 
+      42 003A  B4 00			    mov ah, 0 
+      43 003C  8A D8			    mov bl, al 
+      44 003E  E8			    shr al, 4 
+l8t.asm(41): error A2052: Improper operand type
+      45 003F  3C 09			    cmp al, 9 
+      46 0041  76 02			    jbe digit1 
+      47 0043  04 07			    add al, 7 
+      48 0045				digit1: 
+      49 0045  04 30			    add al, 30h 
+      50 0047  8A D0			    mov dl, al 
+      51 0049  B4 02			    mov ah, 02h 
+      52 004B  CD 21			    int 21h 
+Microsoft (R) Macro Assembler Version 5.00                  11/14/25 12:14:24
+                                                             Page     1-2
+
+
+      53				 
+      54 004D  8A C3			    mov al, bl 
+      55 004F  24 0F			    and al, 0Fh 
+      56 0051  3C 09			    cmp al, 9 
+      57 0053  76 02			    jbe digit2 
+      58 0055  04 07			    add al, 7 
+      59 0057				digit2: 
+      60 0057  04 30			    add al, 30h 
+      61 0059  8A D0			    mov dl, al 
+      62 005B  B4 02			    mov ah, 02h 
+      63 005D  CD 21			    int 21h 
+      64				 
+      65 005F  B2 20			    mov dl, ' ' 
+      66 0061  B4 02			    mov ah, 02h 
+      67 0063  CD 21			    int 21h 
+      68				 
+      69 0065  46			    inc si 
+      70 0066  E2 CE			    loop print_loop 
+      71				 
+      72 0068  B4 4C			    mov ah, 4Ch 
+      73 006A  CD 21			    int 21h 
+      74 006C				main endp 
+      75 006C				end main 
+Microsoft (R) Macro Assembler Version 5.00                  11/14/25 12:14:24
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	001A	WORD	PUBLIC	'DATA'
+  STACK  . . . . . . . . . . . .  	0100	PARA	STACK	'STACK'
+_TEXT  . . . . . . . . . . . . .  	006C	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+ARR  . . . . . . . . . . . . . .  	L BYTE	0000	_DATA
+
+DIGIT1 . . . . . . . . . . . . .  	L NEAR	0045	_TEXT
+DIGIT2 . . . . . . . . . . . . .  	L NEAR	0057	_TEXT
+
+INNER_LOOP . . . . . . . . . . .  	L NEAR	000F	_TEXT
+
+MAIN . . . . . . . . . . . . . .  	N PROC	0000	_TEXT	Length = 006C
+MSG  . . . . . . . . . . . . . .  	L BYTE	0010	_DATA
+
+NO_SWAP  . . . . . . . . . . . .  	L NEAR	0023	_TEXT
+
+OUTER_LOOP . . . . . . . . . . .  	L NEAR	0008	_TEXT
+
+PRINT_LOOP . . . . . . . . . . .  	L NEAR	0036	_TEXT
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@DATASIZE  . . . . . . . . . . .  	TEXT  0		
+@FILENAME  . . . . . . . . . . .  	TEXT  l8t		
+
+
+     72 Source  Lines
+     72 Total   Lines
+     23 Symbols
+
+  50412 + 466132 Bytes symbol space free
+
+      0 Warning Errors
+      1 Severe  Errors

@@ -1,96 +1,90 @@
-.model small
-.stack 100h
-.data
+.MODEL small
+.STACK 100h
+.DATA
 
-msg db 'enter a message:$'
+msg db 'Enter a message:$'
 newline db 0Dh,0Ah,'$'
 
-input db 100 dup('$')
+input db 100 dup('$')   ; buffer for input
+
+; encoding and decoding tables
 array1 db 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 array2 db 'FVXCHSAIYQWGOTBNZKMJPLURDE'
 
-.code
+.CODE
 main proc
     mov ax,@data
     mov ds,ax
 
+    ; --- prompt ---
     mov dx,offset msg
     mov ah,09h
     int 21h
 
+    ; --- read input ---
     mov ah,0Ah
     mov dx,offset input
     int 21h
 
-    mov si,offset input+2
-    mov cl,input+1
+    ; --- encode using XLAT ---
+    lea si,input+2           ; start of user input
+    mov cl,[input+1]         ; number of characters
 
-encode:
+encode_loop:
     cmp cl,0
     je print_encode
     mov al,[si]
-    cmp al,32
-    je skip_encode
-    mov di,0
-find_enc:
-    cmp al,array1[di]
-    je found_enc
-    inc di
-    cmp di,26
-    jne find_enc
-    jmp skip_encode
-found_enc:
-    mov al,array2[di]
+    cmp al,32                ; ignore space
+    je skip_enc
+    sub al,'A'               ; index into array1 (0-25)
+    mov bx,offset array2     ; BX = base of table
+    xlat                     ; AL = array2[AL]
     mov [si],al
-skip_encode:
+skip_enc:
     inc si
     dec cl
-    jmp encode
+    jmp encode_loop
 
 print_encode:
     mov dx,offset newline
     mov ah,09h
     int 21h
 
-    mov dx,offset input+2
+    lea dx,input+2
     mov ah,09h
     int 21h
 
-    mov si,offset input+2
-    mov cl,input+1
+    ; --- decode using XLAT ---
+    lea si,input+2
+    mov cl,[input+1]
 
-decode:
+decode_loop:
     cmp cl,0
     je print_decode
     mov al,[si]
     cmp al,32
-    je skip_decode
-    mov di,0
-find_dec:
-    cmp al,array2[di]
-    je found_dec
-    inc di
-    cmp di,26
-    jne find_dec
-    jmp skip_decode
-found_dec:
-    mov al,array1[di]
+    je skip_dec
+    sub al,'A'
+    mov bx,offset array1
+    xlat
     mov [si],al
-skip_decode:
+skip_dec:
     inc si
     dec cl
-    jmp decode
+    jmp decode_loop
 
 print_decode:
     mov dx,offset newline
     mov ah,09h
     int 21h
 
-    mov dx,offset input+2
+    lea dx,input+2
     mov ah,09h
     int 21h
 
+    ; --- exit ---
     mov ah,4Ch
     int 21h
+
 main endp
 end main

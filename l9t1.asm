@@ -21,8 +21,8 @@ main proc
     mov ah, 0Ah
     mov dx, offset input
     int 21h
-    mov si, offset input +2
-    mov cl, input + 1          
+    mov si, offset input 
+    mov cl, input        
 
 l1:
     cmp cl, 0
